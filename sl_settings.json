@@ -1,13 +1,18 @@
 {
    "description": "gpiotool is a tool that allows you to read, write and configure GPIO pins from the command line.",
-   "github": "https://github.com/StratifyLabs/gpio",
+   "github": "https://github.com/StratifyLabs/gpiotool",
    "name": "gpiotool",
    "permissions": "public",
    "publisher": "Stratify Labs, Inc",
    "tags": "utility",
    "type": "app",
-   "uid": "9cQyOTk3fZXOuMtPyf5j9X4H4b83",
-   "version": "1.0",
+   "uid": "7Z4mr0HQx2eKHHVSX3OYBCPWE5n1",
+   "version": "0.1",
    "hardwareId": "",
-   "ramSize": 0
+   "ramSize": 0,
+   "timestamp": 1549429131,
+   "documentId": "PNXzFMNGs0hIWyhMqFsL",
+   "buildList": {
+      "NA6djbJSrKR1YLjAIuz4": "0.1"
+   }
 }
