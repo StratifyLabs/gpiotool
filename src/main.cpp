@@ -14,7 +14,7 @@ static void execute_mode(const Cli & cli, mcu_pin_t pin, const var::ConstString 
 static void execute_pulse(const Cli & cli, mcu_pin_t pin, int value, int duration_us);
 
 int main(int argc, char * argv[]){
-	String operation;
+	String action;
 	String port_pin;
 	String is_help;
 	String mode;
@@ -27,7 +27,7 @@ int main(int argc, char * argv[]){
 	cli.handle_version();
 
 
-	operation = cli.get_option("op", "specify the operation read|write|readall|mode|pulse");
+	action = cli.get_option("action", "specify the operation read|write|readall|mode|pulse");
 	port_pin = cli.get_option("pin", "specify the port/pin combination as X.Y, e.g. --pin=2.0");
 	is_help = cli.get_option("help", "show help options");
 	mode = cli.get_option("mode", "specify mode as float|pullup|pulldown|out|opendrain");
@@ -41,15 +41,15 @@ int main(int argc, char * argv[]){
 		exit(0);
 	}
 
-	if( operation == "readall" ){
+	if( action == "readall" ){
 		execute_read_all(cli);
-	} else if ( operation == "read" ){
+	} else if ( action == "read" ){
 		execute_read(cli, pin);
-	} else if ( operation == "write" ){
+	} else if ( action == "write" ){
 		execute_write(cli, pin, value.to_integer());
-	} else if ( operation == "mode" ){
+	} else if ( action == "mode" ){
 		execute_mode(cli, pin, mode);
-	} else if ( operation == "pulse" ){
+	} else if ( action == "pulse" ){
 		execute_pulse(cli, pin, value.to_integer(), duration.to_integer());
 	} else {
 		show_usage(cli);
@@ -188,7 +188,6 @@ void execute_pulse(const Cli & cli, mcu_pin_t pin, int value, int duration_us){
 			p = (value == 0);
 		}
 	}
-
 }
 
 

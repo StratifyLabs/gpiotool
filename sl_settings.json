@@ -7,12 +7,13 @@
    "tags": "utility",
    "type": "app",
    "uid": "7Z4mr0HQx2eKHHVSX3OYBCPWE5n1",
-   "version": "0.1",
+   "version": "0.2",
    "hardwareId": "",
    "ramSize": 0,
-   "timestamp": 1549429131,
+   "timestamp": 1549638812,
    "documentId": "PNXzFMNGs0hIWyhMqFsL",
    "buildList": {
-      "NA6djbJSrKR1YLjAIuz4": "0.1"
+      "NA6djbJSrKR1YLjAIuz4": "0.1",
+      "mlfj5uXC4D4xwygrvfLz": "0.2"
    }
 }
