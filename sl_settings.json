@@ -4,16 +4,21 @@
    "name": "gpiotool",
    "permissions": "public",
    "publisher": "Stratify Labs, Inc",
-   "tags": "utility",
+   "tags": "tool",
    "type": "app",
-   "uid": "7Z4mr0HQx2eKHHVSX3OYBCPWE5n1",
-   "version": "0.2",
+   "uid": "9cQyOTk3fZXOuMtPyf5j9X4H4b83",
+   "version": "0.6",
    "hardwareId": "",
    "ramSize": 0,
-   "timestamp": 1549638812,
+   "timestamp": 1552195083,
    "documentId": "PNXzFMNGs0hIWyhMqFsL",
    "buildList": {
       "NA6djbJSrKR1YLjAIuz4": "0.1",
-      "mlfj5uXC4D4xwygrvfLz": "0.2"
-   }
+      "mlfj5uXC4D4xwygrvfLz": "0.2",
+      "fWQcxdiUCvCK031LU7LN": "0.3",
+      "RpcTBtcA1uAY1O5rep9x": "0.4",
+      "u7uEVCnAP6A7xBDGvmqD": "0.5",
+      "TwQZOzbnme3Qt8pRTdKo": "0.6"
+   },
+   "readme": ""
 }

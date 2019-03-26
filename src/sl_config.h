@@ -6,8 +6,8 @@
 #ifndef SL_CONFIG_H_
 #define SL_CONFIG_H_
 
-#define SL_CONFIG_VERSION_STRING "0.2"
-#define SL_CONFIG_VERSION_BCD 0x02
+#define SL_CONFIG_VERSION_STRING "0.6"
+#define SL_CONFIG_VERSION_BCD 0x06
 #define SL_CONFIG_DOCUMENT_ID "PNXzFMNGs0hIWyhMqFsL"
 #define SL_CONFIG_NAME "gpiotool"
 #define SL_CONFIG_TYPE "app"
