@@ -7,10 +7,10 @@
    "tags": "tool",
    "type": "app",
    "uid": "9cQyOTk3fZXOuMtPyf5j9X4H4b83",
-   "version": "0.6",
+   "version": "0.7",
    "hardwareId": "",
    "ramSize": 0,
-   "timestamp": 1552195083,
+   "timestamp": 1558107358,
    "documentId": "PNXzFMNGs0hIWyhMqFsL",
    "buildList": {
       "NA6djbJSrKR1YLjAIuz4": "0.1",
@@ -18,7 +18,7 @@
       "fWQcxdiUCvCK031LU7LN": "0.3",
       "RpcTBtcA1uAY1O5rep9x": "0.4",
       "u7uEVCnAP6A7xBDGvmqD": "0.5",
-      "TwQZOzbnme3Qt8pRTdKo": "0.6"
-   },
-   "readme": ""
+      "TwQZOzbnme3Qt8pRTdKo": "0.6",
+      "ONE4cQp7yTLpuP6Oj8ZZ": "0.7"
+   }
 }

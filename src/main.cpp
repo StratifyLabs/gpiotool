@@ -143,18 +143,16 @@ void execute_write(const Cli & cli, mcu_pin_t pin, int value){
 
 void execute_mode(const Cli & cli, mcu_pin_t pin, const var::ConstString & mode){
 
-	if( mode.is_empty() ){
-		show_usage(cli);
-		exit(1);
-	}
+
+	bool result = true;
 
 	if( pin.port == 255 ){
-		show_usage(cli);
-		exit(1);
+		result = false;
 	} else {
 		Pin p(pin.port, pin.pin);
 		if( p.open(Pin::READWRITE) < 0 ){
 			printf("Failed to open /dev/pio%d", pin.port);
+			result = false;
 		} else {
 			if( (mode == "in") || (mode == "float") || (mode == "tri") ){
 				p.set_attributes(Pin::FLAG_SET_INPUT | Pin::FLAG_IS_FLOAT);
@@ -168,9 +166,18 @@ void execute_mode(const Cli & cli, mcu_pin_t pin, const var::ConstString & mode)
 			} else if ( (mode == "down") || (mode == "pulldown") ){
 				p.set_attributes(Pin::FLAG_SET_INPUT | Pin::FLAG_IS_PULLDOWN);
 				printf("%s:%d.%d -> pulldown\n", cli.name().cstring(), pin.port, pin.pin);
+			} else {
+				printf("%s mode is not recognized\n", mode.cstring());
+				result = false;
 			}
 		}
 	}
+
+	if( !result ){
+		show_usage(cli);
+		exit(1);
+	}
+
 }
 
 void execute_pulse(const Cli & cli, mcu_pin_t pin, int value, int duration_us){
