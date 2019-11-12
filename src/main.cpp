@@ -27,12 +27,35 @@ int main(int argc, char * argv[]){
 	cli.handle_version();
 
 
-	action = cli.get_option("action", "specify the operation read|write|readall|mode|pulse");
-	port_pin = cli.get_option("pin", "specify the port/pin combination as X.Y, e.g. --pin=2.0");
-	is_help = cli.get_option("help", "show help options");
-	mode = cli.get_option("mode", "specify mode as float|pullup|pulldown|out|opendrain");
-	value = cli.get_option("value", "specify output value as 0|1 or operations write|pulse");
-	duration = cli.get_option("duration", "specify pulse duration in microseconds, e.g. --duration=100");
+	action = cli.get_option(
+				arg::OptionName("action"),
+				arg::OptionDescription("specify the operation read|write|readall|mode|pulse")
+				);
+
+	port_pin = cli.get_option(
+				arg::OptionName("pin"),
+				arg::OptionDescription("specify the port/pin combination as X.Y, e.g. --pin=2.0")
+				);
+
+	is_help = cli.get_option(
+				arg::OptionName("help"),
+				arg::OptionDescription("show help options")
+				);
+
+	mode = cli.get_option(
+				arg::OptionName("mode"),
+				arg::OptionDescription("specify mode as float|pullup|pulldown|out|opendrain")
+				);
+
+	value = cli.get_option(
+				arg::OptionName("value"),
+				arg::OptionDescription("specify output value as 0|1 or operations write|pulse")
+				);
+
+	duration = cli.get_option(
+				arg::OptionName("duration"),
+				arg::OptionDescription("specify pulse duration in microseconds, e.g. --duration=100")
+				);
 
 	pin = Pin::from_string(port_pin);
 
@@ -108,7 +131,9 @@ void execute_read(const Cli & cli, mcu_pin_t pin){
 
 	if( pin.port != 255 ){
 		Pin p(pin);
-		if( p.open(Pin::RDWR) < 0 ){
+		if( p.open(
+				 fs::OpenFlags::read_write()
+				 ) < 0 ){
 			printf("Failed to open /dev/pio%d\n", pin.port);
 		} else {
 			printf("%s:%d.%d == %d\n", cli.name().cstring(), pin.port, pin.pin, p.get_value());
@@ -122,8 +147,10 @@ void execute_read(const Cli & cli, mcu_pin_t pin){
 void execute_write(const Cli & cli, mcu_pin_t pin, int value){
 
 	if( pin.port != 255 ){
-		Pin p(pin.port, pin.pin);
-		if( p.open(Pin::RDWR) < 0 ){
+		Pin p( arg::PortNumber(pin.port),
+				 arg::PinNumber(pin.pin) );
+
+		if( p.open( fs::OpenFlags::read_write() ) < 0 ){
 			printf("Failed to open /dev/pio%d\n", pin.port);
 		} else {
 			if( value == 0 ){
@@ -149,8 +176,11 @@ void execute_mode(const Cli & cli, mcu_pin_t pin, const var::ConstString & mode)
 	if( pin.port == 255 ){
 		result = false;
 	} else {
-		Pin p(pin.port, pin.pin);
-		if( p.open(Pin::READWRITE) < 0 ){
+
+		Pin p( arg::PortNumber(pin.port),
+				 arg::PinNumber(pin.pin) );
+
+		if( p.open(fs::OpenFlags::read_write()) < 0 ){
 			printf("Failed to open /dev/pio%d", pin.port);
 			result = false;
 		} else {
@@ -184,8 +214,9 @@ void execute_pulse(const Cli & cli, mcu_pin_t pin, int value, int duration_us){
 	if( pin.port == 0xff ){
 		show_usage(cli);
 	} else {
-		Pin p(pin.port, pin.pin);
-		if( p.open(Pin::READWRITE) < 0 ){
+		Pin p(arg::PortNumber(pin.port),
+				arg::PinNumber(pin.pin) );
+		if( p.open( fs::OpenFlags::read_write() ) < 0 ){
 			printf("Failed to open /dev/pio%d", pin.port);
 		} else {
 			//go high then low
