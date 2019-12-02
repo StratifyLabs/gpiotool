@@ -10,8 +10,17 @@ static void show_usage(const Cli & cli);
 static void execute_read_all(const Cli & cli);
 static void execute_read(const Cli & cli, mcu_pin_t pin);
 static void execute_write(const Cli & cli, mcu_pin_t pin, int value);
-static void execute_mode(const Cli & cli, mcu_pin_t pin, const var::ConstString & mode);
-static void execute_pulse(const Cli & cli, mcu_pin_t pin, int value, int duration_us);
+static void execute_mode(
+		const Cli & cli,
+		mcu_pin_t pin,
+		const var::String & mode
+		);
+static void execute_pulse(
+		const Cli & cli,
+		mcu_pin_t pin,
+		int value,
+		int duration_us
+		);
 
 int main(int argc, char * argv[]){
 	String action;
@@ -28,33 +37,33 @@ int main(int argc, char * argv[]){
 
 
 	action = cli.get_option(
-				arg::OptionName("action"),
-				arg::OptionDescription("specify the operation read|write|readall|mode|pulse")
+				("action"),
+				Cli::Description("specify the operation read|write|readall|mode|pulse")
 				);
 
 	port_pin = cli.get_option(
-				arg::OptionName("pin"),
-				arg::OptionDescription("specify the port/pin combination as X.Y, e.g. --pin=2.0")
+				("pin"),
+				Cli::Description("specify the port/pin combination as X.Y, e.g. --pin=2.0")
 				);
 
 	is_help = cli.get_option(
-				arg::OptionName("help"),
-				arg::OptionDescription("show help options")
+				("help"),
+				Cli::Description("show help options")
 				);
 
 	mode = cli.get_option(
-				arg::OptionName("mode"),
-				arg::OptionDescription("specify mode as float|pullup|pulldown|out|opendrain")
+				("mode"),
+				Cli::Description("specify mode as float|pullup|pulldown|out|opendrain")
 				);
 
 	value = cli.get_option(
-				arg::OptionName("value"),
-				arg::OptionDescription("specify output value as 0|1 or operations write|pulse")
+				("value"),
+				Cli::Description("specify output value as 0|1 or operations write|pulse")
 				);
 
 	duration = cli.get_option(
-				arg::OptionName("duration"),
-				arg::OptionDescription("specify pulse duration in microseconds, e.g. --duration=100")
+				("duration"),
+				Cli::Description("specify pulse duration in microseconds, e.g. --duration=100")
 				);
 
 	pin = Pin::from_string(port_pin);
@@ -147,8 +156,8 @@ void execute_read(const Cli & cli, mcu_pin_t pin){
 void execute_write(const Cli & cli, mcu_pin_t pin, int value){
 
 	if( pin.port != 255 ){
-		Pin p( arg::PortNumber(pin.port),
-				 arg::PinNumber(pin.pin) );
+		Pin p( Pin::Port(pin.port),
+				 Pin::Number(pin.pin) );
 
 		if( p.open( fs::OpenFlags::read_write() ) < 0 ){
 			printf("Failed to open /dev/pio%d\n", pin.port);
@@ -168,7 +177,10 @@ void execute_write(const Cli & cli, mcu_pin_t pin, int value){
 
 }
 
-void execute_mode(const Cli & cli, mcu_pin_t pin, const var::ConstString & mode){
+void execute_mode(
+		const Cli & cli,
+		mcu_pin_t pin,
+		const var::String & mode){
 
 
 	bool result = true;
@@ -177,24 +189,24 @@ void execute_mode(const Cli & cli, mcu_pin_t pin, const var::ConstString & mode)
 		result = false;
 	} else {
 
-		Pin p( arg::PortNumber(pin.port),
-				 arg::PinNumber(pin.pin) );
+		Pin p( Pin::Port(pin.port),
+				 Pin::Number(pin.pin) );
 
 		if( p.open(fs::OpenFlags::read_write()) < 0 ){
 			printf("Failed to open /dev/pio%d", pin.port);
 			result = false;
 		} else {
 			if( (mode == "in") || (mode == "float") || (mode == "tri") ){
-				p.set_attributes(Pin::FLAG_SET_INPUT | Pin::FLAG_IS_FLOAT);
+				p.set_attributes(Pin::SET_INPUT | Pin::IS_FLOAT);
 				printf("%s:%d.%d -> in\n", cli.name().cstring(), pin.port, pin.pin);
 			} else if ( mode == "out" ){
-				p.set_attributes(Pin::FLAG_SET_OUTPUT);
+				p.set_attributes(Pin::SET_OUTPUT);
 				printf("%s:%d.%d -> out\n", cli.name().cstring(), pin.port, pin.pin);
 			} else if ( (mode == "up") || (mode == "pullup") ){
-				p.set_attributes(Pin::FLAG_SET_INPUT | Pin::FLAG_IS_PULLUP);
+				p.set_attributes(Pin::SET_INPUT | Pin::IS_PULLUP);
 				printf("%s:%d.%d -> pullup\n", cli.name().cstring(), pin.port, pin.pin);
 			} else if ( (mode == "down") || (mode == "pulldown") ){
-				p.set_attributes(Pin::FLAG_SET_INPUT | Pin::FLAG_IS_PULLDOWN);
+				p.set_attributes(Pin::SET_INPUT | Pin::IS_PULLDOWN);
 				printf("%s:%d.%d -> pulldown\n", cli.name().cstring(), pin.port, pin.pin);
 			} else {
 				printf("%s mode is not recognized\n", mode.cstring());
@@ -210,19 +222,24 @@ void execute_mode(const Cli & cli, mcu_pin_t pin, const var::ConstString & mode)
 
 }
 
-void execute_pulse(const Cli & cli, mcu_pin_t pin, int value, int duration_us){
+void execute_pulse(
+		const Cli & cli,
+		mcu_pin_t pin,
+		int value,
+		int duration_us
+		){
 	if( pin.port == 0xff ){
 		show_usage(cli);
 	} else {
-		Pin p(arg::PortNumber(pin.port),
-				arg::PinNumber(pin.pin) );
+		Pin p(Pin::Port(pin.port),
+				Pin::Number(pin.pin) );
 		if( p.open( fs::OpenFlags::read_write() ) < 0 ){
 			printf("Failed to open /dev/pio%d", pin.port);
 		} else {
 			//go high then low
 			printf("%s:%d.%d -> %d (%dusec) -> %d\n", cli.name().cstring(), pin.port, pin.pin, value, duration_us, !value);
 			p = (value != 0);
-			Timer::wait_microseconds(duration_us);
+			chrono::wait(chrono::Microseconds(duration_us));
 			p = (value == 0);
 		}
 	}
