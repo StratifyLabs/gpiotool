@@ -197,16 +197,16 @@ void execute_mode(
 			result = false;
 		} else {
 			if( (mode == "in") || (mode == "float") || (mode == "tri") ){
-				p.set_attributes(Pin::SET_INPUT | Pin::IS_FLOAT);
+				p.set_attributes(Pin::flag_set_input | Pin::flag_is_float);
 				printf("%s:%d.%d -> in\n", cli.name().cstring(), pin.port, pin.pin);
 			} else if ( mode == "out" ){
-				p.set_attributes(Pin::SET_OUTPUT);
+				p.set_attributes(Pin::flag_set_output);
 				printf("%s:%d.%d -> out\n", cli.name().cstring(), pin.port, pin.pin);
 			} else if ( (mode == "up") || (mode == "pullup") ){
-				p.set_attributes(Pin::SET_INPUT | Pin::IS_PULLUP);
+				p.set_attributes(Pin::flag_set_input | Pin::flag_is_pullup);
 				printf("%s:%d.%d -> pullup\n", cli.name().cstring(), pin.port, pin.pin);
 			} else if ( (mode == "down") || (mode == "pulldown") ){
-				p.set_attributes(Pin::SET_INPUT | Pin::IS_PULLDOWN);
+				p.set_attributes(Pin::flag_set_input | Pin::IS_PULLDOWN);
 				printf("%s:%d.%d -> pulldown\n", cli.name().cstring(), pin.port, pin.pin);
 			} else {
 				printf("%s mode is not recognized\n", mode.cstring());
